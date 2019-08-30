@@ -40,7 +40,7 @@ public:
     InstChecker(const llvm::Type *boolType, const llvm::Type *floatType, const llvm::Type *doubleType);
     ~InstChecker();
 
-    void visitTerminatorInst(llvm::TerminatorInst &I);
+    void visitTerminatorInst(llvm::Instruction &I);
 
     void visitAdd(llvm::BinaryOperator &I);
     void visitSub(llvm::BinaryOperator &I);

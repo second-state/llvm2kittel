@@ -206,11 +206,9 @@ bool Hoister::canHoistInst(llvm::Instruction &I, llvm::AliasAnalysis *AA)
 #endif
         }
 #if LLVM_VERSION <= VERSION(3, 5)
-        return !CurAST->getAliasSetForPointer(LI->getOperand(0), Size, LI->getMetadata(llvm::LLVMContext::MD_tbaa)).isMod();
+        return !CurAST->getAliasSetFor(LI->getOperand(0), Size, LI->getMetadata(llvm::LLVMContext::MD_tbaa)).isMod();
 #else
-        llvm::AAMDNodes AAInfo;
-        LI->getAAMetadata(AAInfo);
-        return !CurAST->getAliasSetForPointer(LI->getOperand(0), Size, AAInfo).isMod();
+        return !CurAST->getAliasSetFor(llvm::MemoryLocation::get(LI)).isMod();
 #endif
     } else if (llvm::CallInst *CI = llvm::dyn_cast<llvm::CallInst>(&I)) {
         // Handle obvious cases efficiently.

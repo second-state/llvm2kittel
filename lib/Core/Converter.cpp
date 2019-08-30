@@ -77,6 +77,7 @@ Converter::Converter(const llvm::Type *boolType, bool assumeIsControl, bool sele
 
 bool Converter::isTrivial(void)
 {
+    return false;
     llvm::SmallVector<std::pair<const llvm::BasicBlock*, const llvm::BasicBlock*>, SMALL_VECTOR_SIZE> res;
     llvm::FindFunctionBackedges(*m_function, res);
 
@@ -386,7 +387,7 @@ ref<Constraint> Converter::getConditionFromValue(llvm::Value *cond)
         return Nondef::create();
     }
     if (!llvm::isa<llvm::Instruction>(cond)) {
-        cond->dump();
+        //cond->dump();
         std::cerr << "Cannot handle non-instructions!" << std::endl;
         exit(5);
     }
@@ -724,7 +725,7 @@ void Converter::visitBB(llvm::BasicBlock *bb)
     }
 
     // jump from bb_out to succs
-    llvm::TerminatorInst *terminator = bb->getTerminator();
+    llvm::Instruction *terminator = bb->getTerminator();
     if (llvm::isa<llvm::ReturnInst>(terminator)) {
     } else if (llvm::isa<llvm::UnreachableInst>(terminator)) {
         ref<Term> lhs = Term::create(getEval(bb, "out"), m_lhs);
@@ -779,7 +780,7 @@ std::list<ref<Polynomial> > Converter::getArgsWithPhis(llvm::BasicBlock *from, l
     return res;
 }
 
-void Converter::visitTerminatorInst(llvm::TerminatorInst&)
+void Converter::visitTerminatorInst(llvm::Instruction&)
 {}
 
 void Converter::visitGenericInstruction(llvm::Instruction &I, std::list<ref<Polynomial> > newArgs, ref<Constraint> c)

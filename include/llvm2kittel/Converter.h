@@ -55,7 +55,7 @@ public:
     void phase1(llvm::Function *function, std::set<llvm::Function*> &scc, MayMustMap &mmMap, std::map<llvm::Function*, std::set<llvm::GlobalVariable*> > &funcMayZap, TrueFalseMap &tfMap, std::set<llvm::BasicBlock*> &lcbs, ConditionMap &elcMap);
     void phase2(llvm::Function *function, std::set<llvm::Function*> &scc, MayMustMap &mmMap, std::map<llvm::Function*, std::set<llvm::GlobalVariable*> > &funcMayZap, TrueFalseMap &tfMap, std::set<llvm::BasicBlock*> &lcbs, ConditionMap &elcMap);
 
-    void visitTerminatorInst(llvm::TerminatorInst &I);
+    void visitTerminatorInst(llvm::Instruction &I);
 
     void visitAdd(llvm::BinaryOperator &I);
     void visitSub(llvm::BinaryOperator &I);

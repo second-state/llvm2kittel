@@ -11,6 +11,7 @@
 
 // llvm includes
 #include <llvm/Transforms/Utils/PromoteMemToReg.h>
+#include <llvm/Transforms/Utils.h>
 
 void Mem2RegPass::getAnalysisUsage(llvm::AnalysisUsage &AU) const
 {

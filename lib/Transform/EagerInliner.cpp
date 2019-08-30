@@ -30,7 +30,7 @@ EagerInliner::~EagerInliner()
 
 llvm::InlineCost EagerInliner::getInlineCost(llvm::CallSite)
 {
-    return llvm::InlineCost::getAlways();
+    return llvm::InlineCost::getAlways("I am god!");
 }
 
 float EagerInliner::getInlineFudgeFactor(llvm::CallSite)

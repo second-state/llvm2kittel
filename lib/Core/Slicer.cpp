@@ -800,8 +800,11 @@ std::list<ref<Rule> > Slicer::sliceStillUsed(std::list<ref<Rule> > rules, bool c
 std::set<std::string> Slicer::getStillUsed(std::string f)
 {
     std::set<std::string> res;
-    std::set<std::string> fstillused = m_stillUsed.find(f)->second;
-    res.insert(fstillused.begin(), fstillused.end());
+    auto fstillusedit = m_stillUsed.find(f);
+    if(fstillusedit != m_stillUsed.end()) {
+        std::set<std::string> fstillused = fstillusedit->second;
+        res.insert(fstillused.begin(), fstillused.end());
+    }
     unsigned int fidx = getIdxFunction(f);
     for (unsigned int i = 0; i < m_numFunctions; ++i) {
         if (m_calls[fidx + i * m_numFunctions] && !isRecursiveCall(getFunction(i))) {

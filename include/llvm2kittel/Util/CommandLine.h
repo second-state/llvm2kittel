@@ -514,7 +514,7 @@ public:
 };
 
 template<class DataType>
-ValuesClass<DataType> END_WITH_NULL values(const char *Arg, DataType Val,
+ValuesClass<DataType> values(const char *Arg, DataType Val,
                                            const char *Desc, ...) {
     va_list ValueArgs;
     va_start(ValueArgs, Desc);

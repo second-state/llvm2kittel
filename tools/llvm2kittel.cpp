@@ -4,6 +4,7 @@
 //
 // Licensed under the University of Illinois/NCSA Open Source License.
 // See LICENSE for details.
+#include <llvm/Transforms/IPO/AlwaysInliner.h>
 
 #include "llvm2kittel/BoundConstrainer.h"
 #include "llvm2kittel/ConstraintEliminator.h"
@@ -35,6 +36,9 @@
 #include "llvm2kittel/Transform/StrengthIncreaser.h"
 #include "llvm2kittel/Util/CommandLine.h"
 #include "llvm2kittel/Util/Version.h"
+#include <llvm/Transforms/Utils.h>
+#include <llvm/InitializePasses.h>
+#include <llvm/Support/TargetSelect.h>
 
 // llvm includes
 #include "WARN_OFF.h"
@@ -201,6 +205,7 @@ void transformModule(llvm::Module *module, llvm::Function *function, NondefFacto
     // function inlining
     if (eagerInline) {
         llvmPasses.add(createEagerInlinerPass());
+        //llvmPasses.add(llvm::createAlwaysInlinerLegacyPass());
     } else {
         for (unsigned int i = 0; i < numInlines; ++i) {
             llvmPasses.add(createExtremeInlinerPass(function, inlineVoids));
@@ -399,6 +404,10 @@ int main(int argc, char *argv[])
     cl::SetVersionPrinter(&versionPrinter);
     cl::ParseCommandLineOptions(argc, argv, "llvm2kittel\n");
 
+    llvm::PassRegistry &Registry = *llvm::PassRegistry::getPassRegistry();
+    //llvm::initializeScalarOpts(Registry);
+    llvm::initializeIPO(Registry);
+
     if (boundedIntegers && divisionConstraintType == Exact) {
         std::cerr << "Cannot use \"-division-constraint=exact\" in combination with \"-bounded-integers\"" << std::endl;
         return 333;
@@ -591,7 +600,7 @@ int main(int argc, char *argv[])
     if (!unsuitable.empty()) {
         std::cerr << "Unsuitable instructions detected:" << std::endl;
         for (std::list<llvm::Instruction*>::iterator i = unsuitable.begin(), e = unsuitable.end(); i != e; ++i) {
-            (*i)->dump();
+            //(*i)->dump();
         }
         return 6;
     }
@@ -668,6 +677,12 @@ int main(int argc, char *argv[])
         }
         funcMayZap.insert(std::make_pair(func, funcTransZap));
     }
+
+    // std::list<llvm::Function*> dependsOnSccMerger;
+    // for (auto &&scc : dependsOnSccs)
+    //     dependsOnSccMerger.splice(dependsOnSccMerger.begin(), scc);
+    // dependsOnSccs.clear();
+    // dependsOnSccs.push_back(std::move(dependsOnSccMerger));
 
     // convert sccs separately
     unsigned int num = static_cast<unsigned int>(dependsOnSccs.size());

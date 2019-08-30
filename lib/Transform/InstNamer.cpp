@@ -48,7 +48,7 @@ void InstNamer::nameBasicBlock(llvm::BasicBlock *BB)
         m_namedGlobals = true;
         llvm::Module *module = BB->getParent()->getParent();
         for (llvm::Module::global_iterator global = module->global_begin(), globale = module->global_end(); global != globale; ++global) {
-            if (llvm::isa<llvm::IntegerType>(llvm::cast<llvm::PointerType>(global->getType())->getContainedType(0))) {
+            if (llvm::isa<llvm::IntegerType>(llvm::dyn_cast<llvm::PointerType>(global->getType())->getContainedType(0))) {
                 if (!global->hasName()) {
                     std::ostringstream tmp;
                     tmp << "'global" << m_globalCounter++;

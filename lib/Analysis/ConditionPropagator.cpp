@@ -130,7 +130,7 @@ bool ConditionPropagator::runOnFunction(llvm::Function &F)
             llvm::BasicBlock *pred = *(preds.begin());
             // branch condition!
             if (!m_onlyLoopConditions || m_lcbs.find(pred) != m_lcbs.end()) {
-                llvm::TerminatorInst *termi = pred->getTerminator();
+                auto *termi = pred->getTerminator();
                 if (llvm::isa<llvm::BranchInst>(termi)) {
                     llvm::BranchInst *br = llvm::cast<llvm::BranchInst>(termi);
                     if (br->isConditional()) {
