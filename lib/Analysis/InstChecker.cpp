@@ -38,7 +38,7 @@ void InstChecker::addUnsuitable(llvm::Instruction &I)
     m_unsuitableInsts.push_back(&I);
 }
 
-void InstChecker::visitTerminatorInst(llvm::TerminatorInst &I)
+void InstChecker::visitTerminatorInst(llvm::Instruction &I)
 {
     if (!llvm::isa<llvm::BranchInst>(&I) && !llvm::isa<llvm::ReturnInst>(&I) && !llvm::isa<llvm::UnreachableInst>(&I)) {
         addUnsuitable(I);

@@ -37,15 +37,15 @@ llvm::InlineCost ExtremeInliner::getInlineCost(llvm::CallSite callSite)
     llvm::Function *caller = callSite.getCaller();
 
     if (caller != m_function) {
-        return llvm::InlineCost::getNever();
+        return llvm::InlineCost::getNever("I am god!");
     }
 
     const llvm::Type *type = callSite.getType();
     if (!m_inlineVoids && (type->isVoidTy() || type->isFloatTy() || type->isDoubleTy() || llvm::isa<llvm::PointerType>(type))) {
-        return llvm::InlineCost::getNever();
+        return llvm::InlineCost::getNever("I am god!");
     }
 
-    return llvm::InlineCost::getAlways();
+    return llvm::InlineCost::getAlways("I am god!");
 }
 
 float ExtremeInliner::getInlineFudgeFactor(llvm::CallSite)

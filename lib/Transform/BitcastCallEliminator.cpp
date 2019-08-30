@@ -30,8 +30,8 @@ bool BitcastCallEliminator::runOnFunction(llvm::Function &function)
                     llvm::Value *calledValue = callInst->getCalledValue();
                     llvm::Value *bareCalledValue = calledValue->stripPointerCasts();
                     if (llvm::isa<llvm::Function>(bareCalledValue)) {
-                        const llvm::FunctionType *calledType = llvm::cast<llvm::FunctionType>(llvm::cast<llvm::PointerType>(calledValue->getType())->getContainedType(0));
-                        const llvm::FunctionType *calleeType = llvm::cast<llvm::Function>(bareCalledValue)->getFunctionType();
+                        const llvm::FunctionType *calledType = llvm::dyn_cast<llvm::FunctionType>(llvm::dyn_cast<llvm::PointerType>(calledValue->getType())->getContainedType(0));
+                        const llvm::FunctionType *calleeType = llvm::dyn_cast<llvm::Function>(bareCalledValue)->getFunctionType();
                         if (calledType->getReturnType() == calleeType->getReturnType()) {
                             if (argsMatch(calleeType, callInst)) {
                                 std::vector<llvm::Value*> args;

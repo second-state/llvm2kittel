@@ -31,7 +31,7 @@ bool BasicBlockSorter::runOnFunction(llvm::Function &function)
 // recursive function for depth-first post-order iteration over a directed graph of basic blocks
 void BasicBlockSorter::visitBasicBlock(std::vector<llvm::BasicBlock *> &blockList, std::set<llvm::BasicBlock *> &visitedBlocks, llvm::BasicBlock *BB)
 {
-    const llvm::TerminatorInst *term = BB->getTerminator();
+    const auto *term = BB->getTerminator();
 
     visitedBlocks.insert(BB);
 
